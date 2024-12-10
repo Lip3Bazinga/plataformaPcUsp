@@ -1,17 +1,19 @@
-"use client"
+"use client";
 
-import React, { FC, useState } from "react"
-import Heading from "./utils/Heading"
-import Header from "./components/Header"
-import Hero from "./components/Route/Hero"
-interface Props {
+import React, { FC, useState } from "react";
+import Heading from "./utils/Heading";
+import Header from "./components/Header";
+import Hero from "./components/Route/Hero";
 
-}
+const Page: FC = () => {
+  const [open, setOpen] = useState(false);
+  const [activeItem, setActiveItem] = useState(0);
 
-const Page: FC<Props> = (props) => {
-
-  const [open, setOpen] = useState(false)
-  const [activeItem, setActiveItem] = useState(0)
+  // Se você deseja usar setActiveItem em algum lugar, faça isso de forma adequada.
+  // Por exemplo, se você quiser definir activeItem com base em uma interação:
+  const handleClick = (item: number) => {
+    setActiveItem(item); // Use setActiveItem quando necessário
+  };
 
   return (
     <div>
@@ -26,9 +28,10 @@ const Page: FC<Props> = (props) => {
         activeItem={activeItem}
       />
       <Hero />
-
+      {/* Exemplo de uso do handleClick */}
+      <button onClick={() => handleClick(1)}>Ativar Item 1</button>
     </div>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;

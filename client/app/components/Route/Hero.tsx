@@ -2,16 +2,18 @@ import React, { FC } from "react";
 import Image from "next/image";
 import { BiSearch } from "react-icons/bi";
 
-type Props = {};
+import BannerImage from "../../../public/assets/banner-img-1.png"
 
-const Hero: FC<Props> = (props) => {
+// type Props = {};
+
+const Hero: FC = () => {
   return (
     <div className="relative w-full h-[100vh] flex flex-col sm:flex-row items-center justify-between dark:hero-animation">
       <div className="flex items-center justify-center h-full w-full sm:w-1/2 relative">
         {/* Ajustando as dimensões da animação */}
         <div className="absolute top-[50px] sm:top-[unset] h-[30vh] w-[30vh] sm:h-[500px] sm:w-[500px] hero_animation rounded-full"></div>
         <Image
-          src={require("../../../public/assets/banner-img-1.png")}
+          src={BannerImage}
           alt="Banner Image"
           className="object-contain max-w-[350px] sm:max-w-[300px] h-auto mx-auto z-10" // Aumentando o tamanho da imagem
         />

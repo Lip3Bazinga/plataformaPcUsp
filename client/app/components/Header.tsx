@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link";
-import React, { FC, useState, useEffect } from "react";
+import React, { FC, useState } from "react";
 import NavItems from "../utils/NavItems"
 import ThemeSwitcher from "../utils/ThemeSwitcher"
 import { HiOutlineMenuAlt3, HiOutlineUserCircle } from "react-icons/hi"
@@ -23,9 +23,9 @@ const Header: FC<Props> = ({ activeItem, setOpen }) => {
     })
   }
 
-  const handleClose = (e: any) => {
-    if (e.target.id === "screen") {
-      setOpenSideBar(false)
+  const handleClose = (e: React.MouseEvent<HTMLDivElement>) => {
+    if ((e.target as HTMLElement).id === "screen") {
+      setOpenSideBar(false);
     }
   }
 
