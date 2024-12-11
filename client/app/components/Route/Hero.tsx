@@ -72,7 +72,7 @@ const Hero: FC = () => {
               />
             </li>
           </ul>
-          <p className="mt-2">300+ Pessoas já confiaram em nós.
+          <p className="mt-2 dark:text-white text-black">300+ Pessoas já confiaram em nós.
             <Link
               href="/courses"
               className="text-[#8C52FF] pl-2 font-[700]"
