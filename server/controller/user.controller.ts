@@ -11,29 +11,38 @@ import { accessTokenOptions, refreshTokenOptions, sendToken } from '../utils/jwt
 import { redis } from '../utils/redis';
 import { getUserById } from '../services/user.service';
 import { model } from 'mongoose';
+import cloudinary from "cloudinary"
 
-// Register User
 interface IRegistrationBody {
   name: string,
   email: string,
   password: string,
   avatar?: string
 }
-
 interface IActivationToken {
   token: string,
   activationCode: string
 }
-
-// Activate user
 interface IActivationRequest {
   activation_token: string,
   activation_code: string
 }
-
 interface ILoginRequest {
   email: string,
   password: string
+}
+interface ISocialAuthBody {
+  email: string,
+  name: string,
+  avatar: string,
+}
+interface IUpdateUserInfo {
+  name?: string;
+  email?: string;
+}
+interface IUpdatePassword {
+  oldPassword: string
+  newPassword: string
 }
 
 export const registrationUser = CatchAsyncError(async (
@@ -143,30 +152,37 @@ export const activateUser = CatchAsyncError(async (
   }
 })
 
-// Login User
-export const loginUser = CatchAsyncError(async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+
+export const loginUser = CatchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { email, password } = req.body as ILoginRequest
-    const user = await userModel.findOne({ email }).select("+password")
-    const isPasswordMatch = await user?.comparePassword(password)
+    const { email, password } = req.body as ILoginRequest;
 
-    if (!email || !password) return next(new ErrorHandler("Por favor entre com o email e senha", 400))
+    // Verifique se email e password foram fornecidos
+    if (!email || !password) {
+      return next(new ErrorHandler("Por favor entre com o email e senha", 400));
+    }
 
-    if (!user) return next(new ErrorHandler("Email ou senha inválidos.", 400))
+    // Busque o usuário pelo email
+    const user = await userModel.findOne({ email }).select("+password");
 
-    if (!isPasswordMatch) return (new ErrorHandler("Email ou senha inválidos.", 400))
+    // Verifique se o usuário existe
+    if (!user) {
+      return next(new ErrorHandler("Email ou senha inválidos.", 400));
+    }
 
-    sendToken(user, 200, res)
+    // Verifique se a senha está correta
+    const isPasswordMatch = await user.comparePassword(password);
+    if (!isPasswordMatch) {
+      return next(new ErrorHandler("Email ou senha inválidos.", 400));
+    }
 
+    // Se tudo estiver correto, envie o token
+    sendToken(user, 200, res);
   } catch (error: any) {
-    console.log("Erro na função sendToken: ", error)
-    return next(new ErrorHandler(error.message, 400))
+    console.log("Erro na função sendToken: ", error);
+    return next(new ErrorHandler(error.message, 400));
   }
-})
+});
 
 // Logout User
 export const logoutUser = CatchAsyncError(async (
@@ -196,12 +212,12 @@ export const updateAccessToken = CatchAsyncError(async (
   next: NextFunction
 ) => {
   try {
-    const refresh_token = req.cookies.refresh_token as string || "defaultSecretKey"
+    const refresh_token = req.cookies.refresh_token as string || ""
     const decoded = jwt.verify(
       refresh_token,
       process.env.REFRESH_TOKEN as string,
     ) as JwtPayload
-    const message = "Could not refresh token"
+    const message = "Não foi possível atualizar o token"
 
     if (!decoded)
       return next(new ErrorHandler(message, 400))
@@ -213,7 +229,9 @@ export const updateAccessToken = CatchAsyncError(async (
 
     const user = JSON.parse(session)
 
-    const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET as string, {
+    const accessToken = jwt.sign(
+      { id: user._id },
+      process.env.ACCESS_TOKEN as string, {
       expiresIn: "5m",
     })
 
@@ -261,20 +279,15 @@ export const getUserInfo = CatchAsyncError(async (
   }
 })
 
-interface ISocialAuthBody {
-  email: string,
-  name: string,
-  avatar: string,
-}
-
 // Social auth
 export const socialAuth = CatchAsyncError(async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
+  console.log("Requisição recebida para social auth.");
   try {
-    const { email, name, avatar } = req.body
+    const { email, name, avatar } = req.body as ISocialAuthBody
     const user = await userModel.findOne({ email })
     if (!user) {
       const newUser = await userModel.create({ email, name, avatar })
@@ -286,12 +299,7 @@ export const socialAuth = CatchAsyncError(async (
   }
 })
 
-// Update user info
-interface IUpdateUserInfo {
-  name?: string;
-  email?: string;
-}
-
+// Update User info
 export const updateUserInfo = CatchAsyncError(async (
   req: Request,
   res: Response,
@@ -299,12 +307,16 @@ export const updateUserInfo = CatchAsyncError(async (
 ) => {
   try {
     const { name, email } = req.body as IUpdateUserInfo
-    const userId = req.user?._id || ""
+    const userId = req.user?._id
+    if (!userId) return next(new ErrorHandler("Usuário não encontrado.", 400))
+
     const user = await userModel.findById(userId)
+
+    if (!user) return next(new ErrorHandler("Usuário não encontrado.", 400))
 
     if (email && user) {
       const isEmailExist = await userModel.findOne({ email })
-      if (isEmailExist) return next(new ErrorHandler("Email already exist", 400))
+      if (isEmailExist) return next(new ErrorHandler("Email já existente.", 400))
       user.email = email
     }
 
@@ -314,11 +326,103 @@ export const updateUserInfo = CatchAsyncError(async (
 
     await user?.save()
 
-    await redis.set(userId, JSON.stringify(user))
+    await redis.set(userId.toString(), JSON.stringify(user))
 
-    console.log('Olá')
+    res.status(201).json({
+      success: true,
+      message: "Informações do usuário atualizadas com sucesso.",
+      user
+    });
 
   } catch (error: any) {
     return next(new ErrorHandler(error.message, 400))
+  }
+})
+
+// Update User password
+export const updatePassword = CatchAsyncError(async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { oldPassword, newPassword } = req.body as IUpdatePassword;
+
+    if (!oldPassword || !newPassword) {
+      return next(new ErrorHandler("Por favor informe a senha antiga e a nova senha.", 400));
+    }
+
+    const user = await userModel.findById(req.user?._id).select("+password");
+
+    if (!user) return next(new ErrorHandler("Usuário inválido", 400));
+
+    const isPasswordMatch = await user.comparePassword(oldPassword);
+
+    if (!isPasswordMatch) return next(new ErrorHandler("Senha antiga inválida", 400));
+
+    user.password = newPassword;
+
+    await user.save();
+
+    // Verifique se o userId existe antes de usar no Redis
+    const userId = req.user?._id;
+    if (!userId) {
+      return next(new ErrorHandler("Usuário não encontrado", 404));
+    }
+
+    await redis.set(userId.toString(), JSON.stringify(user));
+
+    res.status(201).json({
+      success: true,
+      message: "Senha alterada com sucesso.",
+      user,
+    });
+
+  } catch (error: any) {
+    return next(new ErrorHandler(error.message, 400));
+  }
+});
+
+// Update profile picture
+export const updateProfilePicture = CatchAsyncError(async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { avatar } = req.body
+    const userId = req.user?._id
+
+    if (!userId) return next(new ErrorHandler("Usuário não encontrado", 404))
+
+    const user = await userModel.findById(userId)
+
+    if (!user) return next(new ErrorHandler("Usuário não encontrado", 404))
+
+    if (avatar) {
+      if (user.avatar?.public_id) await cloudinary.v2.uploader.destroy(user?.avatar?.public_id)
+
+      const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+        folder: "avatars",
+        width: 150
+      })
+
+      user.avatar = {
+        public_id: myCloud.public_id,
+        url: myCloud.secure_url
+      }
+    }
+
+    await user.save()
+
+    await redis.set(userId.toString(), JSON.stringify(user))
+
+    res.status(200).json({
+      success: true,
+      user,
+    })
+
+  } catch (error: any) {
+    return next(new ErrorHandler(error.message || "Erro ao atualizar a imagem de perfil.", 400))
   }
 })

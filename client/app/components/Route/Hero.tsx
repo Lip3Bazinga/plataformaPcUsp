@@ -1,13 +1,13 @@
-import React, { FC } from "react";
-import Image from "next/image";
-import { BiSearch } from "react-icons/bi";
-import BannerImage from "../../../public/assets/banner-img-1.png";
+import React, { FC } from "react"
+import Image from "next/image"
+import { BiSearch } from "react-icons/bi"
+import BannerImage from "../../../public/assets/banner-img-1.png"
 import Person1 from "../../../public/assets/person-1.jpg"
 import Person2 from "../../../public/assets/person-2.jpg"
 import Person3 from "../../../public/assets/person-3.jpg"
 
-import TypingEffect from "../../utils/TypingEffect"; // Importa o componente TypingEffect
-import Link from "next/link";
+import TypingEffect from "../../utils/TypingEffect" // Importa o componente TypingEffect
+import Link from "next/link"
 
 const Hero: FC = () => {
   return (

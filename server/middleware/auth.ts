@@ -39,7 +39,7 @@ export const authorizeRoles = (...roles: string[]) => {
     next: NextFunction
   ) => {
     if (!roles.includes(req.user?.role || ""))
-      return next(new ErrorHandler(`Função: ${req.user?.role} O usuário não tem permissão para acessar este recurso`, 403))
+      return next(new ErrorHandler(`Função: ${req.user?.role}.Logo, o usuário não tem permissão para acessar este recurso`, 403))
     next()
   }
 }
