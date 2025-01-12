@@ -39,7 +39,7 @@ Será necessário acessar a subpasta correspondente para realizar a instalação
 
 2. **Clone o repositório**  
    ```bash
-   [git clone https://github.com/pcUSP/plataformaPCUSP.git](https://github.com/pcUSP/platafromaPCUSP.git)
+   git clone https://github.com/pcUSP/plataformaPCUSP.git 
 
 3. **Acesse a pasta do projeto clonado**
    ```bash
