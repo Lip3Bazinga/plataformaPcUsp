@@ -13,13 +13,13 @@
 
 👉 *Versão do node utilizada no projeto: **[v2-.17.0]***
 
-👉 **Acesse o seu terminal** (🌟RESSALVA: tem que ter o git neh🌟)
+\👉 **Acesse o seu terminal** (🌟RESSALVA: tem que ter o git neh🌟)
  
 👉 **Clone o repositório:** [git clone https://github.com/pcUSP/plataformaPCUSP]
 👉 **Acesse a pasta do clone do projeto:** `cd plataformaPCUSP`
 
 👉 Deste passo em diante você terá que *definir qual módulo do projeto você desejará trabalhar*.
-👉 Por exemplo:
+\👉 Por exemplo:
 👉 `cd client` || `[cd server]` || `[cd snippets]`
 
 👉 Apartir daqui, já não dependerá de qual sub-pasta você está.
