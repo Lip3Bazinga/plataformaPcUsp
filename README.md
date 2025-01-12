@@ -62,3 +62,8 @@ Será necessário acessar a subpasta correspondente para realizar a instalação
 
    ```bash
        npm install
+
+6. **Executando o projeto**
+
+   ```bash
+      npm run dev
