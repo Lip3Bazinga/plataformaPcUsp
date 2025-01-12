@@ -1,28 +1,64 @@
-# Plataforma Pensamento Computacional 
+# **Plataforma Pensamento Computacional**
 
-👉 Plataforma que visa democratizar o ensino de computação por meio de uma plataforma LMS gratuíta
+👉 Plataforma que visa democratizar o ensino de computação por meio de uma plataforma LMS gratuita.
 
-## Índice
-👉 [Instalação](#instalação)\
-👉 [Uso](#uso)\
-👉 [Contribuição](#contribuição)\
+---
 
-\## Instalação
+## **Índice**
+👉 [Instalação](#instalação)  
+👉 [Uso](#uso)  
+👉 [Contribuição](#contribuição)  
 
-👉 O projeto está em fase de produção. Nesse sentido, o client ainda não está integrado ao server, e por isso, tanto a instação, quanto a visualização deverão ser feita em processos separados. O clone do projeto é integral, mas ao acessar a pasta você perceberá que terá 3 sub-pastas - client, server e snippets - ao realizar a instação das dependências, você terá que acessar a sub-pasta em questão para então executar o comando que será descrito posteriormente. Dito isso, boa sorte dev, que a força esteja com você! 🚀
+---
 
-👉 *Versão do node utilizada no projeto: **[v2-.17.0]***
+## **Instalação**
 
-\👉 **Acesse o seu terminal** (🌟RESSALVA: tem que ter o git neh🌟)
- 
-👉 **Clone o repositório:** [git clone https://github.com/pcUSP/plataformaPCUSP]
-👉 **Acesse a pasta do clone do projeto:** `cd plataformaPCUSP`
+O projeto está em fase de produção. Nesse sentido, o client ainda não está integrado ao server, e, por isso, tanto a instalação quanto a execução deverão ser feitas de forma separada.  
 
-👉 Deste passo em diante você terá que *definir qual módulo do projeto você desejará trabalhar*.
-\👉 Por exemplo:
-👉 `cd client` || `[cd server]` || `[cd snippets]`
+Ao clonar o projeto, você encontrará três subpastas:  
+- `client`  
+- `server`  
+- `snippets`  
 
-👉 Apartir daqui, já não dependerá de qual sub-pasta você está.
+Será necessário acessar a subpasta correspondente para realizar a instalação das dependências e executar os comandos específicos de cada módulo.
 
-👉 **Instalar as dependências**: `[npm install]`
-  
+**🌟 Dica do Dev: Que a força esteja com você! 🚀 🌟**
+
+---
+
+### **Requisitos**
+👉 **Node.js**: Versão utilizada no projeto **[v20.17.0]**  
+👉 **Git**: Certifique-se de que o Git está instalado em sua máquina.  
+
+---
+
+### **Passo a passo**
+
+1. **Acesse o terminal**  
+   Certifique-se de estar no diretório onde deseja clonar o projeto.  
+
+2. **Clone o repositório**  
+   ```bash
+   git clone https://github.com/pcUSP/plataformaPCUSP
+
+3. **Acesse a pasta do projeto clonado**
+   ```bash
+   cd plataformaPCUSP
+
+4. **Escolha o módulo desejado**
+   *Navegue até a subpasta que deseja trabalhar*
+   - Para o client
+     - ```bash
+       cd client
+   - Para o server
+     - ```bash
+       cd server
+   - Para o snippets
+     - ```bash
+       cd client
+       
+5. **Instale as dependências**
+   Em qualquer subpasta escolhida, executa o comando:
+
+   ```bash
+       npm install
