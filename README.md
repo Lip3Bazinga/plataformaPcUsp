@@ -27,7 +27,8 @@ Será necessário acessar a subpasta correspondente para realizar a instalação
 ---
 
 ### **Requisitos**
-👉 **Node.js**: Versão utilizada no projeto **[v20.17.0]**  
+👉 **Node.js**: Versão utilizada no projeto **[v20.17.0]**. Caso não tenha o node instalado, segue a documentação para instação: [https://nodejs.org/pt]
+
 👉 **Git**: Certifique-se de que o Git está instalado em sua máquina.  
 
 ---
