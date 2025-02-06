@@ -4,6 +4,8 @@ import './globals.css';
 // import type { Metadata } from 'next';
 import { Poppins, Josefin_Sans } from 'next/font/google';
 import { ThemeProvider } from './utils/ThemeProvider';
+import { Toaster } from "react-hot-toast"
+import { Providers } from './Provider';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -28,9 +30,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           bg-no-repeat dark:bg-gradient-to-b dark:from-gray-900 dark:to-black
         `}
       >
-        <ThemeProvider >
-          {children}
-        </ThemeProvider>
+        <Providers>
+          <ThemeProvider >
+            {children}
+            <Toaster position="top-center" reverseOrder={false} />
+          </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );

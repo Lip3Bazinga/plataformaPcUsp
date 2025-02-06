@@ -8,11 +8,9 @@ import Hero from "./components/Route/Hero";
 const Page: FC = () => {
   const [open, setOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(0);
-
-  // Se você deseja usar setActiveItem em algum lugar, faça isso de forma adequada.
-  // Por exemplo, se você quiser definir activeItem com base em uma interação:
+  const [route, setRoute] = useState("Login")
   const handleClick = (item: number) => {
-    setActiveItem(item); // Use setActiveItem quando necessário
+    setActiveItem(item);
   };
 
   return (
@@ -26,6 +24,8 @@ const Page: FC = () => {
         open={open}
         setOpen={setOpen}
         activeItem={activeItem}
+        setRoute={setRoute}
+        route={route}
       />
       <Hero />
       {/* Exemplo de uso do handleClick */}

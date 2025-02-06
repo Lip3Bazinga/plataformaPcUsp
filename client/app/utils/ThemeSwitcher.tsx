@@ -1,16 +1,15 @@
-"use client" 
+"use client"
 
-import {useState, useEffect} from "react"
-import {useTheme} from "next-themes"
-import {BiMoon, BiSun} from "react-icons/bi"
+import { useState, useEffect } from "react"
+import { useTheme } from "next-themes"
+import { BiMoon, BiSun } from "react-icons/bi"
 
-
-export default function ThemeSwitcher(){
+export default function ThemeSwitcher() {
   const [mounted, setMounted] = useState(false)
-  const {theme, setTheme} = useTheme()
+  const { theme, setTheme } = useTheme()
   useEffect(() => setMounted(true), [])
 
-  if(!mounted) return null
+  if (!mounted) return null
 
   return (
     <div className="flex items-center justify-center mx-4">
@@ -27,6 +26,7 @@ export default function ThemeSwitcher(){
           <BiSun
             className="cursor-pointer"
             size={25}
+            fill="white"
             onClick={() => setTheme("light")}
           />
         )
