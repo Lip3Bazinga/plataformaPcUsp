@@ -50,7 +50,9 @@ const SignUp: FC<Props> = ({ setRoute }) => {
       const data = {
         name, email, password
       }
+
       await register(data)
+
       // setRoute("Verification")
     }
   })
