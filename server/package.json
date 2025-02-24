@@ -4,6 +4,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode production",
     "dev": "ts-node-dev --respawn --transpile-only server.ts"
   },
   "author": "Filipe Pio Magalhães",

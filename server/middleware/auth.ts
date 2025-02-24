@@ -17,18 +17,25 @@ export const isAuthenticated = CatchAsyncError(async (
     return next(new ErrorHandler("Por favor, faça login para acessar a página", 400))
   }
 
-  const decoded = jwt.verify(access_token, process.env.ACCESS_TOKEN as string) as JwtPayload
-  if (!decoded) {
-    return next(new ErrorHandler("O Token de acesso não é válido.", 400))
+  try {
+    const decoded = jwt.verify(access_token, process.env.ACCESS_TOKEN as string) as JwtPayload
+
+    if (!decoded) {
+      return next(new ErrorHandler("O Token de acesso não é válido.", 400))
+    }
+
+    const userId = decoded.id as string
+    const user = await redis.get(userId)
+
+    if (!user) return next(new ErrorHandler("Usuário não encontrado.", 400))
+
+    req.user = JSON.parse(user)
+
+    next()
+  } catch (error: any) {
+    return next(new ErrorHandler("O Token de acesso não é válido.", 400));
   }
 
-  const user = await redis.get(decoded.id)
-
-  if (!user) return next(new ErrorHandler("Usuário não encontrado.", 400))
-
-  req.user = JSON.parse(user)
-
-  next()
 
 })
 

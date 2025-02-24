@@ -6,8 +6,10 @@ export const apiSlice = createApi({
     baseUrl: process.env.NEXT_PUBLIC_SERVER_URI || 'http://localhost:8000/api/v1',
   }),
   endpoints: (builder) => ({
-
+    loadUser: builder.query({
+      query: () => "/profile"
+    })
   })
 })
 
-export const { } = apiSlice
+export const { useLoadUserQuery } = apiSlice

@@ -16,8 +16,13 @@ import cloudinary from "cloudinary"
 interface IRegistrationBody {
   name: string,
   email: string,
+  emailPersonCharge?: string;
+  age: number,
   password: string,
-  avatar?: string
+  telephone: string,
+  telephonePersonCharge?: string,
+  seriesCurrentlyStudying: string,
+  avatar?: string,
 }
 interface IActivationToken {
   token: string,
@@ -34,11 +39,22 @@ interface ILoginRequest {
 interface ISocialAuthBody {
   email: string,
   name: string,
+  emailPersonCharge?: string;
+  age?: number;
+  telephone?: string,
+  telephonePersonCharge?: string,
+  seriesCurrentlyStudying?: string,
   avatar: string,
 }
 interface IUpdateUserInfo {
   name?: string;
   email?: string;
+  emailPersonCharge?: string;
+  age: number;
+  password?: string,
+  telephone?: string,
+  telephonePersonCharge?: string,
+  seriesCurrentlyStudying?: string,
 }
 interface IUpdatePassword {
   oldPassword: string
@@ -51,7 +67,8 @@ export const registrationUser = CatchAsyncError(async (
   next: NextFunction
 ) => {
   try {
-    const { name, email, password } = req.body
+    const { name, email, emailPersonCharge, age, telephone, telephonePersonCharge, seriesCurrentlyStudying, password } = req.body
+    console.log(req.body)
     const isEmailExist = await userModel.findOne({ email })
     if (isEmailExist) {
       return next(new ErrorHandler("Email já cadastrado!", 400))
@@ -59,7 +76,12 @@ export const registrationUser = CatchAsyncError(async (
     const user: IRegistrationBody = {
       name,
       email,
-      password
+      emailPersonCharge,
+      age,
+      telephone,
+      telephonePersonCharge,
+      seriesCurrentlyStudying,
+      password,
     }
     const activationToken = createActivationToken(user)
 
@@ -130,7 +152,16 @@ export const activateUser = CatchAsyncError(async (
     if (newUser.activationCode !== activation_code)
       return next(new ErrorHandler("Código de ativação inválido", 400))
 
-    const { name, email, password } = newUser.user
+    const {
+      name,
+      email,
+      emailPersonCharge,
+      age,
+      telephone,
+      telephonePersonCharge,
+      seriesCurrentlyStudying,
+      password,
+    } = newUser.user
 
     const existUser = await userModel.findOne({ email })
 
@@ -140,6 +171,11 @@ export const activateUser = CatchAsyncError(async (
     const user = await userModel.create({
       name,
       email,
+      emailPersonCharge,
+      age,
+      telephone,
+      telephonePersonCharge,
+      seriesCurrentlyStudying,
       password
     })
 
@@ -306,6 +342,45 @@ export const updateUserInfo = CatchAsyncError(async (
   next: NextFunction
 ) => {
   try {
+
+    const { age } = req.body as IUpdateUserInfo
+
+    if (age < 18) {
+      const { name, email, emailPersonCharge, telephone, telephonePersonCharge } = req.body as IUpdateUserInfo
+      const userId = req.user?._id
+      if (!userId) return next(new ErrorHandler("Usuário não encontrado.", 400))
+
+      const user = await userModel.findById(userId)
+
+      if (!user) return next(new ErrorHandler("Usuário não encontrado.", 400))
+
+      if (email && user) {
+        const isEmailExist = await userModel.findOne({ email })
+        if (isEmailExist) return next(new ErrorHandler("Email já existente.", 400))
+        user.email = email
+      }
+
+      if (emailPersonCharge && user) {
+        const isEmailExist = await userModel.findOne({ emailPersonCharge })
+        if (isEmailExist) return next(new ErrorHandler("Email já existente.", 400))
+        user.emailPersonCharge = emailPersonCharge
+      }
+
+      if (name && user) user.name = name
+      if (telephone && user) user.telephone = telephone
+
+
+      await user?.save()
+
+      await redis.set(userId.toString(), JSON.stringify(user))
+
+      res.status(201).json({
+        success: true,
+        message: "Informações do usuário atualizadas com sucesso.",
+        user
+      });
+    }
+
     const { name, email } = req.body as IUpdateUserInfo
     const userId = req.user?._id
     if (!userId) return next(new ErrorHandler("Usuário não encontrado.", 400))
@@ -333,6 +408,8 @@ export const updateUserInfo = CatchAsyncError(async (
       message: "Informações do usuário atualizadas com sucesso.",
       user
     });
+
+
 
   } catch (error: any) {
     return next(new ErrorHandler(error.message, 400))

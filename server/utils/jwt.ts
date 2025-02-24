@@ -41,8 +41,9 @@ export const sendToken = (
   const refreshToken = user.SignRefreshToken();
 
   // Upload session to redis
-  redis.set(String(user._id.toString()), JSON.stringify(user));  // Convert user._id to string
-
+  redis.set(String(user._id.toString()), JSON.stringify(user))
+    .then(() => console.log("Usuário salvo no Redis com sucesso:", user._id))
+    .catch((err) => console.error("Erro ao salvar usuário no Redis:", err));
   // Set cookies and send JSON response
   res.cookie("access_token", accessToken, accessTokenOptions);
   res.cookie("refresh_token", refreshToken, refreshTokenOptions);

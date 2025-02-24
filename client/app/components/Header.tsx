@@ -5,12 +5,21 @@ import React, { FC, useState, useEffect } from "react";
 import NavItems from "../utils/NavItems";
 import ThemeSwitcher from "../utils/ThemeSwitcher";
 import { HiOutlineMenuAlt3, HiOutlineUserCircle } from "react-icons/hi";
-import Logo from "../../public/assets/logo_dark.png"; // Verifique este caminho
-import Image from "next/image";
 import CustomModal from "../utils/CustomModal";
 import Login from "../components/Auth/Login";
 import SignUp from "../components/Auth/SignUp"
 import Verification from "../components/Auth/Verification"
+import { useSelector } from "react-redux"
+import Image from "next/image";
+import avatar from "../../public/assets/avatar.png"
+
+import Logo from "../../public/assets/logo_dark.png"; // Verifique este caminho
+import { useSession } from "next-auth/react"
+import Page from "../profile/page"
+import router, { useRouter } from "next/router";
+import { useLogOutQuery, useSocialAuthMutation } from "@/redux/features/auth/authApi";
+import toast from "react-hot-toast";
+import { createActionCreatorInvariantMiddleware } from "@reduxjs/toolkit";
 
 type Props = {
   open: boolean;
@@ -23,8 +32,32 @@ type Props = {
 const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
   const [active, setActive] = useState(false);
   const [openSideBar, setOpenSideBar] = useState(false);
+  const { user } = useSelector((state: any) => state.auth)
+  const { data } = useSession()
+  const [socialAuth, { isSuccess, error }] = useSocialAuthMutation()
+  const [logout, setLogout] = useState(false)
+  const { } = useLogOutQuery(undefined, {
+    skip: !logout ? true : false,
+  })
 
-  // Hook para adicionar e remover o listener de scroll
+  useEffect(() => {
+    if (!user) {
+      if (data) {
+        socialAuth({
+          email: data?.user?.email,
+          name: data?.user?.name,
+          avatar: data?.user?.image
+        })
+      }
+    }
+    if (data === null) {
+      if (isSuccess) toast.success("Login realizado com sucesso.")
+    }
+    if (data === null) {
+      setLogout(true)
+    }
+  }, [data, user])
+
   useEffect(() => {
     const handleScroll = () => {
       setActive(window.scrollY > 80);
@@ -51,18 +84,17 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
         : "w-full border-b dark:border-[#FFFFFF1C] h-[80px] z-[80] dark:shadow"
       }>
         <div className="w-[95%] m-auto py-2 h-full flex items-center justify-between">
-          <div className="flex items-center w-full h-full">
-            <Link href="/" className="relative w-[80px] h-[80px]">
-              <Image
-                src={Logo}
-                alt="Logo"
-                className="absolute top-0 left-0 w-full h-full object-cover"
-                width={80}
-                height={80}
-              />
-            </Link>
+          <Link href="/" className="relative w-[80px] h-[80px]">
+            <Image
+              src={Logo}
+              alt="Logo"
+              className="absolute top-0 left-0 w-full h-full object-cover"
+              width={80}
+              height={80}
+            />
+          </Link>
+          <div className="flex items-center justify-center w-full h-full">
             <NavItems activeItem={activeItem} isMobile={false} />
-            <ThemeSwitcher />
             <div className="800px:hidden">
               <HiOutlineMenuAlt3
                 size={25}
@@ -70,12 +102,28 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
                 onClick={() => setOpenSideBar(true)}
               />
             </div>
+          </div>
+          <ThemeSwitcher />
+          {user ? (
+            <Link href={"/profile"}>
+              <Image
+                src={user.avatar ? user.avatar.url : avatar}
+                alt="Usuário"
+                width={30}
+                height={30}
+                className={`w-[30px] h-[30px] object-contain cursor-pointer rounded-full ${!data?.user?.image ? "dark:invert" : ""}`}
+                style={{ border: activeItem === 6 ? "2px solid #FF914D" : "none" }}
+                onClick={() => setRoute("Profile")}
+              />
+            </Link>
+          ) : (
             <HiOutlineUserCircle
               size={25}
               className="hidden 800px:block cursor-pointer dark:text-white text-black"
               onClick={() => setOpen(true)}
             />
-          </div>
+          )
+          }
         </div>
 
         {openSideBar && (
@@ -84,7 +132,6 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
             onClick={handleClose}
             id="screen"
           >
-            {/* Sidebar content */}
           </div>
         )}
       </div>

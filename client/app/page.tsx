@@ -5,13 +5,12 @@ import Heading from "./utils/Heading";
 import Header from "./components/Header";
 import Hero from "./components/Route/Hero";
 
-const Page: FC = () => {
+interface Props { }
+
+const Page: FC<Props> = (props) => {
   const [open, setOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(0);
   const [route, setRoute] = useState("Login")
-  const handleClick = (item: number) => {
-    setActiveItem(item);
-  };
 
   return (
     <div>
@@ -28,8 +27,6 @@ const Page: FC = () => {
         route={route}
       />
       <Hero />
-      {/* Exemplo de uso do handleClick */}
-      <button onClick={() => handleClick(1)}>Ativar Item 1</button>
     </div>
   );
 };

@@ -57,8 +57,8 @@ const Verification: FC<Props> = ({ setRoute }) => {
       return
     }
     await activation({
+      activation_code: verificationNumber,
       activation_token: token,
-      activation_code: verificationNumber
     })
   }
 

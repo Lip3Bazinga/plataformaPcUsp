@@ -1,8 +1,8 @@
 import 'dotenv/config';
-import {Redis} from "ioredis"
+import { Redis } from "ioredis"
 
 const redisClient = () => {
-  if(process.env.REDIS_URL){
+  if (process.env.REDIS_URL) {
     console.log(`Redis connected`)
     return process.env.REDIS_URL
   }
@@ -10,3 +10,11 @@ const redisClient = () => {
 }
 
 export const redis = new Redis(redisClient())
+
+redis.on("connect", () => {
+  console.log("Conectado ao Redis com sucesso!");
+});
+
+redis.on("error", (err) => {
+  console.error("Erro ao conectar ao Redis:", err);
+});
