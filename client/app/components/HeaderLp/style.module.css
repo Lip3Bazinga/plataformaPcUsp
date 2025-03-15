@@ -1,0 +1,412 @@
+/* HeaderLp.module.css */
+
+/* --------------------- */
+/* HEADER vs SCROLL base */
+/* --------------------- */
+.header {
+  position: fixed;
+  top: 6rem;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+  padding: 2rem 7%;
+  display: flex;
+  flex: wrap;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.4s ease-in-out;
+}
+
+.scroll {
+  position: fixed;
+  top: 0; /* Ajuste diferente, se quiser */
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+  display: flex;
+  flex: wrap;
+  /* Mantém ou ajusta a padding conforme desejar */
+  padding: 1rem 7%;
+  align-items: flex-end;
+  justify-content: space-between;
+  background: var(--black);
+  box-shadow: 0 1px 10px 0.1px var(--white);
+  backdrop-filter: blur(5px) !important;
+  -webkit-backdrop-filter: blur(5px);
+  transition: all 0.4s ease-in-out;
+}
+
+/* --------------------- */
+/* LOGO */
+/* --------------------- */
+.header .logo {
+  position: relative;
+  min-width: 20rem;
+  height: 14rem;
+  z-index: 100;
+  transition: all 0.4s ease-in-out;
+}
+
+.scroll .logo {
+  position: relative;
+  min-width: 15rem; /* Ajuste diferente, se quiser */
+  height: 10rem;    /* Ajuste diferente, se quiser */
+  z-index: 100;
+  transition: all 0.4s ease-in-out;
+}
+
+.header .logo img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.scroll .logo img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --------------------- */
+/* MENU BTN */
+/* --------------------- */
+.header .menuBtn {
+  position: absolute;
+  top: 50%;
+  right: 12%;
+  z-index: 10000;
+  transform: translate(0%, -50%);
+  color: var(--white);
+  font-size: 5rem;
+  cursor: pointer;
+}
+
+.scroll .menuBtn {
+  /* Mesmo estilo do header, se desejar igual: */
+  position: absolute;
+  top: 50%;
+  right: 12%;
+  z-index: 10000;
+  transform: translate(0%, -50%);
+  color: var(--white);
+  font-size: 5rem;
+  cursor: pointer;
+}
+
+/* --------------------- */
+/* NAVIGATION CONTAINER */
+/* --------------------- */
+.header .navigation {
+  position: relative;
+  width: 40rem;
+  height: 7rem;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1rem;
+  font-family: "Poppins", sans-serif;
+  border: 0.5rem solid var(--purple);
+}
+
+.scroll .navigation {
+  position: relative;
+  width: 40rem;
+  height: 7rem;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1rem;
+  font-family: "Poppins", sans-serif;
+  border: 0.5rem solid var(--purple);
+}
+
+/* --------------------- */
+/* NAVIGATION UL */
+/* --------------------- */
+.header .navigation ul {
+  position: relative;
+  display: flex;
+  width: 35rem;
+}
+
+.scroll .navigation ul {
+  position: relative;
+  display: flex;
+  width: 35rem;
+}
+
+/* --------------------- */
+/* NAVIGATION LI */
+/* --------------------- */
+.header .navigation ul li {
+  position: relative;
+  width: 7rem;
+  height: 7rem;
+  z-index: 1;
+}
+
+.scroll .navigation ul li {
+  position: relative;
+  width: 7rem;
+  height: 7rem;
+  z-index: 1;
+}
+
+/* --------------------- */
+/* NAVIGATION LI A */
+/* --------------------- */
+.header .navigation ul li a {
+  position: relative;
+  gap: 2rem;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  text-align: center;
+  font-weight: 500;
+}
+
+.scroll .navigation ul li a {
+  position: relative;
+  gap: 2rem;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Hover */
+.header .navigation ul li:hover a::before {
+  width: 100%;
+}
+
+/* Caso queira hover igual ao header: */
+.scroll .navigation ul li:hover a::before {
+  width: 100%;
+}
+
+/* Estilo especial já existia para scroll */
+.scroll .navigation ul li a::before {
+  background: var(--black);
+}
+
+/* --------------------- */
+/* ICON */
+/* --------------------- */
+.header .navigation ul li a .icon {
+  position: relative;
+  display: block;
+  line-height: 7.5rem;
+  font-size: 3.5em;
+  text-align: center;
+  transition: 0.5s;
+  color: var(--orange);
+  margin-top: 15px;
+}
+
+.scroll .navigation ul li a .icon {
+  position: relative;
+  display: block;
+  line-height: 7.5rem;
+  font-size: 3.5em;
+  text-align: center;
+  transition: 0.5s;
+  color: var(--orange);
+  margin-top: 15px;
+}
+
+.header .navigation ul li a .icon .iconSvg {
+  margin-top: 10px;
+}
+
+.scroll .navigation ul li a .icon .iconSvg {
+  margin-top: 10px;
+}
+
+/* --------------------- */
+/* ACTIVE STATES */
+/* --------------------- */
+.header .navigation ul li.active a .icon {
+  transform: translateY(-3rem);
+  color: var(--purple);
+}
+
+.scroll .navigation ul li.active a .icon {
+  transform: translateY(-3rem);
+  color: var(--purple);
+}
+
+/* Texto do Link */
+.header .navigation ul li a .textLink {
+  position: absolute;
+  color: var(--purple);
+  font-weight: 700;
+  font-size: 1.5rem;
+  letter-spacing: 0.05rem;
+  transition: 0.5s;
+  opacity: 0;
+  margin-top: 5rem;
+  width: 100%;
+  transform: translateY(3rem);
+}
+
+.scroll .navigation ul li a .textLink {
+  position: absolute;
+  color: var(--purple);
+  font-weight: 700;
+  font-size: 1.5rem;
+  letter-spacing: 0.05rem;
+  transition: 0.5s;
+  opacity: 0;
+  margin-top: 5rem;
+  width: 100%;
+  transform: translateY(3rem);
+}
+
+.header .navigation ul li.active a .textLink {
+  opacity: 1;
+  transform: translateY(0.1rem);
+}
+
+.scroll .navigation ul li.active a .textLink {
+  opacity: 1;
+  transform: translateY(0.1rem);
+}
+
+/* --------------------- */
+/* INDICATOR */
+/* --------------------- */
+.header .navigation .indicator {
+  position: absolute;
+  top: -50%;
+  width: 7rem;
+  height: 7rem;
+  background: var(--orange);
+  border-radius: 50%;
+  border: 0.6rem solid var(--purple);
+  transition: all 0.5s ease-in-out;
+}
+
+.scroll .navigation .indicator {
+  position: absolute;
+  top: -50%;
+  width: 7rem;
+  height: 7rem;
+  background: var(--orange);
+  border-radius: 50%;
+  border: 0.6rem solid var(--purple);
+  transition: all 0.5s ease-in-out;
+}
+
+.header .indicator::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -2.2rem;
+  width: 2rem;
+  height: 2rem;
+  background: transparent;
+  border-top-right-radius: 2rem;
+  box-shadow: 0rem -1rem 0 0 transparent;
+}
+
+.scroll .indicator::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -2.2rem;
+  width: 2rem;
+  height: 2rem;
+  background: transparent;
+  border-top-right-radius: 2rem;
+  box-shadow: 0rem -1rem 0 0 transparent;
+}
+
+.header .indicator::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -2.2rem;
+  width: 2rem;
+  height: 2rem;
+  background: transparent;
+  border-top-left-radius: 2rem;
+  box-shadow: 0rem -1rem 0 0 transparent;
+}
+
+.scroll .indicator::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -2.2rem;
+  width: 2rem;
+  height: 2rem;
+  background: transparent;
+  border-top-left-radius: 2rem;
+  box-shadow: 0rem -1rem 0 0 transparent;
+}
+
+/* --------------------- */
+/* INDICATOR POSITIONS */
+/* (Pode replicar para scroll também) */
+/* --------------------- */
+.navigation ul li:nth-child(1).active ~ .indicator {
+  transform: translateX(calc(7rem * 0));
+}
+.navigation ul li:nth-child(2).active ~ .indicator {
+  transform: translateX(calc(7rem * 1));
+}
+.navigation ul li:nth-child(3).active ~ .indicator {
+  transform: translateX(calc(7rem * 2));
+}
+.navigation ul li:nth-child(4).active ~ .indicator {
+  transform: translateX(calc(7rem * 3));
+}
+.navigation ul li:nth-child(5).active ~ .indicator {
+  transform: translateX(calc(7rem * 4));
+}
+
+/* --------------------- */
+/* OPEN / CLOSE ICONS (sem .header/.scroll) */
+/* --------------------- */
+.header .menuBtn {
+  position: absolute;
+  top: 50%;
+  right: 12%;
+  z-index: 10000;
+  transform: translate(0%, -50%);
+  color: var(--white);
+  font-size: 5rem;
+  cursor: pointer;
+  display: none;
+}
+
+.scroll .menuBtn {
+  /* Replicado acima, se quiser igual. */
+}
+
+.openIcon,
+.closeIcon {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.openIcon.active,
+.closeIcon.active {
+  opacity: 0;
+  visibility: hidden;
+}

@@ -1,0 +1,46 @@
+/* AccordionItem.module.css */
+
+.accordionItem {
+  /* Estilos para o item do accordion */
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 5px;
+}
+
+.open {
+    /* Estilos para o item do accordion quando está aberto */
+    background-color: red;
+}
+
+.accordionItem label {
+  /* Estilos para o label (título) do item */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.icon {
+  /* Estilos para o ícone */
+  transition: transform 0.2s ease-in-out;
+}
+
+.rotated {
+  /* Estilos para o ícone quando o item está aberto */
+  transform: rotate(90deg);
+}
+
+.content {
+  /* Estilos para o conteúdo do item */
+  padding: 0 10px;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease-in-out;
+}
+
+.show {
+  /* Estilos para o conteúdo quando o item está aberto */
+  max-height: 500px; /* Ajuste conforme necessário */
+  padding: 10px;
+}

@@ -13,6 +13,9 @@ export default {
         Poppins: ["var(--font-Poppins)"],
         Josefin: ["var(--font-Josefin)"],
       },
+      transitionDuration: {
+        '4000': '4000ms',
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
@@ -29,6 +32,12 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        'custom-blue': 'rgba(87,84,236,1)',
+        'custom-orange': 'rgb(252, 206, 0)',
+      },
+      width: {
+        '75%': '75%',
+        '25%': '25%',
       },
     },
   },
