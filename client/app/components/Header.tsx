@@ -13,7 +13,7 @@ import { useSelector } from "react-redux"
 import Image from "next/image";
 import avatar from "../../public/assets/avatar.png"
 
-import Logo from "../../public/assets/logo_dark.png"; // Verifique este caminho
+import Logo from "../../public/assets/logo_dark.png";
 import { useSession } from "next-auth/react"
 import Page from "../profile/page"
 import router, { useRouter } from "next/router";
@@ -40,13 +40,15 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
     skip: !logout ? true : false,
   })
 
+  console.log("Usuário: ", user, "\nData: ", data)
+
   useEffect(() => {
     if (!user) {
       if (data) {
         socialAuth({
-          email: data?.user?.email,
           name: data?.user?.name,
-          avatar: data?.user?.image
+          email: data?.user?.email,
+          avatar: data.user?.image,
         })
       }
     }
@@ -65,7 +67,6 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
 
     window.addEventListener("scroll", handleScroll);
 
-    // Cleanup para evitar vazamentos de memória
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -111,9 +112,8 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
                 alt="Usuário"
                 width={30}
                 height={30}
-                className={`w-[30px] h-[30px] object-contain cursor-pointer rounded-full ${!data?.user?.image ? "dark:invert" : ""}`}
-                style={{ border: activeItem === 6 ? "2px solid #FF914D" : "none" }}
-                onClick={() => setRoute("Profile")}
+                className={`w-[40px] h-[40px] object-contain cursor-pointer rounded-[50%] `}
+                style={{ border: activeItem === 5 ? "2px solid #FF914D" : "none" }}
               />
             </Link>
           ) : (

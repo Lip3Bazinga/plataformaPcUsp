@@ -1,7 +1,6 @@
 'use client';
 
 import './globals.css';
-// import type { Metadata } from 'next';
 import { Poppins, Josefin_Sans } from 'next/font/google';
 import { ThemeProvider } from './utils/ThemeProvider';
 import { Toaster } from "react-hot-toast"
@@ -9,6 +8,9 @@ import { Providers } from './Provider';
 import { SessionProvider } from "next-auth/react"
 import { useLoadUserQuery } from "@/redux/features/api/apiSlice"
 import Loader from "./components/Loader/Loader"
+import { useEffect, useState } from 'react';
+
+
 const poppins = Poppins({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
@@ -34,7 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       >
         <Providers>
           <SessionProvider>
-            <ThemeProvider >
+            <ThemeProvider>
               <Custom>
                 {children}
               </Custom>
@@ -48,14 +50,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 
 const Custom: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [isClient, setIsClient] = useState(false)
   const { isLoading } = useLoadUserQuery({})
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) return null; // Evita erro de hidratação
   return (
     <>
-
       {
         isLoading ? <Loader /> : <> {children} </>
       }
-
     </>
   )
 }

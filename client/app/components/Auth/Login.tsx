@@ -107,12 +107,11 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
           <input type="submit" value="Entrar" className={`${styles.button}`} />
         </div>
 
-        <h5 className="text-center pt-4 font-Poppins text-[14px] text-black dark:text-white">Ou entre com</h5>
-
-        <div className="flex items-center justify-center my-3">
+        {/* <h5 className="text-center pt-4 font-Poppins text-[14px] text-black dark:text-white">Ou entre com</h5> */}
+        {/* <div className="flex items-center justify-center my-3">
           <FcGoogle size={30} className="cursor-pointer mr-2" onClick={() => signIn("google")} />
           <AiFillGithub size={30} className="cursor-pointer ml-2" onClick={() => signIn("github")} />
-        </div>
+        </div> */}
 
         <div className="text-center pt-4 font-Poppins text-[14px] text-white">
           Não possuir uma conta?{" "}

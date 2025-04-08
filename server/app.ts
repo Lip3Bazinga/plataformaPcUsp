@@ -7,6 +7,8 @@ import { ErrorMiddleware } from './middleware/error';
 import userRouter from './routes/user.route';
 import courseRouter from './routes/course.route';
 import orderRouter from "./routes/order.route"
+import notificationRouter from './routes/notification.route';
+import analyticsRouter from './routes/analytics.route';
 
 // Body Parser
 app.use(express.json({ limit: "50mb" }));
@@ -17,14 +19,14 @@ app.use(cookieParser())
 // Cors => Cross origin resource sharing
 app.use(
   cors({
-    // origin: process.env.ORIGIN,
-    origin: ['http://localhost:3000', 'http://143.107.137.13:3001'],
+    origin: process.env.ORIGIN,
+    // origin: ['http://localhost:3000', 'http://143.107.137.13:3001'],
     credentials: true,
   })
 )
 
 //Routes
-app.use("/api/v1", userRouter, orderRouter, courseRouter)
+app.use("/api/v1", userRouter, orderRouter, courseRouter, notificationRouter, analyticsRouter)
 
 // Testing API
 app.get("/test", (

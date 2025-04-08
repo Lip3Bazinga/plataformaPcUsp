@@ -136,7 +136,7 @@ export default function Page() {
   };
 
   return (
-    <div className={styles.main}>
+    <div className={`${styles.main} font-[62.5%]`}>
 
       <Link href={"/"} className="group absolute top-2 left-3 w-[40px] h-[40px] rounded-[50%] border-[3px] hover:border-[#F98148] bg-[rgb(0,0,0,0.1)] z-10 flex justify-center items-center transition-all duration-200 ease-in-out hover:scale-95">
         <IoChevronBack size={20} className="text-white group-hover:text-[#F98148]" />

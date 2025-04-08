@@ -135,7 +135,7 @@ const courseSchema = new Schema<ICourse>({
     type: Boolean,
     default: false,
   }
-})
+}, { timestamps: true })
 
 const CourseModel: Model<ICourse> = mongoose.model("Course", courseSchema)
 

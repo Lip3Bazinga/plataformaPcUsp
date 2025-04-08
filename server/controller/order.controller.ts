@@ -7,8 +7,8 @@ import CourseModel from "../models/course.model"
 import NotificationsModel from "../models/notificationModel"
 import path from "path"
 import ejs from "ejs"
-import sendMail from '../utils/sendMail';
-import { newOrder } from "../services/order.service"
+import sendMail from "../utils/sendMail"
+import { getAllOrdersService, newOrder } from "../services/order.service"
 
 // Criando pedido
 export const createOrder = CatchAsyncError(async (
@@ -22,7 +22,11 @@ export const createOrder = CatchAsyncError(async (
 
     const user = await userModel.findById(req.user?._id)
 
-    const courseExistsInUser = user?.courses.some((course: any) => course._id.toString() === courseId)
+    if (!user || !user._id) return next(new ErrorHandler("Usuário não encontrado", 404))
+
+    user.courses = user.courses || []
+
+    const courseExistsInUser = user.courses.some((course: any) => course._id.toString() === courseId)
 
     if (courseExistsInUser) return next(new ErrorHandler("Você já adquiriu este curso.", 400))
 
@@ -80,5 +84,18 @@ export const createOrder = CatchAsyncError(async (
 
   } catch (error: any) {
     next(new ErrorHandler(error.message, 500))
+  }
+})
+
+// Get All Orders --- only
+export const getAllOrders = CatchAsyncError(async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    getAllOrdersService(res)
+  } catch (error: any) {
+    return next(new ErrorHandler(error.message, 500))
   }
 })

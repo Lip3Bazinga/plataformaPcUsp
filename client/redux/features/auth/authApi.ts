@@ -9,12 +9,12 @@ type RegistrationResponse = {
 type RegistrationData = {
   name: string;
   email: string;
+  emailPersonCharge: string;
   password: string;
   age: number;
   telephone: string;
-  seriesCurrentlyStudying: string;
-  emailPersonCharge: string;
   telephonePersonCharge: string;
+  seriesCurrentlyStudying: string;
 }
 
 type LoginResponse = {
@@ -79,13 +79,17 @@ export const authApi = apiSlice.injectEndpoints({
       }
     }),
     socialAuth: builder.mutation({
-      query: ({ email, name, avatar }) => ({
+      query: ({ name, email, emailPersonCharge, age, telephone, telephonePersonCharge, avatar }) => ({
         url: "social-auth",
         method: "POST",
         body: {
-          email,
           name,
-          avatar
+          email,
+          emailPersonCharge,
+          age,
+          telephone,
+          telephonePersonCharge,
+          avatar,
         },
         credentials: "include" as const,
       }),

@@ -3,8 +3,8 @@ import mongoose, { Document, Model, Schema } from "mongoose";
 export interface INotification extends Document {
   title: string;
   message: string;
-  status: string;
-  userId: string;
+  status: string
+  userId: string
 }
 
 const notificationSchema = new Schema<INotification>({
@@ -23,6 +23,6 @@ const notificationSchema = new Schema<INotification>({
   }
 }, { timestamps: true })
 
-const NotificationsModel: Model<INotification> = mongoose.model("Notification", notificationSchema)
+const NotificationModel: Model<INotification> = mongoose.model("Notification", notificationSchema)
 
-export default NotificationsModel
+export default NotificationModel

@@ -2,16 +2,17 @@ import { NextFunction, Request, Response } from "express"
 import { CatchAsyncError } from "../middleware/catchAsyncErros"
 import ErrorHandler from "../utils/ErrorHandlers"
 import cloudinary from "cloudinary"
-import { createCourse } from "../services/course.service"
+import { createCourse, getAllCoursesService } from "../services/course.service"
 import CourseModel from "../models/course.model"
 import { redis } from "../utils/redis"
 import mongoose from "mongoose"
 import ejs from "ejs"
 import path from "path"
 import sendMail from "../utils/sendMail"
+import NotificationModel from "../models/notificationModel"
+import { getAllUsersService } from "../services/user.service"
 
 // Interfaces 
-
 interface IAddQuestionData {
   question: string,
   courseId: string,
@@ -149,7 +150,6 @@ export const getAllCourses = CatchAsyncError(async (
     const isCacheExist = await redis.get("allCourses")
 
     if (isCacheExist) {
-      console.log("\n\nCache encontrado:", isCacheExist);
       const course = JSON.parse(isCacheExist)
       res.status(200).json({
         success: true,
@@ -161,7 +161,6 @@ export const getAllCourses = CatchAsyncError(async (
 
       try {
         await redis.set("allCourses", JSON.stringify(courses))
-        console.log("\n\nCursos armazenados no cache:", courses);
         res.status(200).json({
           success: true,
           courses,
@@ -233,6 +232,12 @@ export const addQuestion = CatchAsyncError(async (
     // Adicionar a pergunta ao conteúdo do curso
     courseContent.questions.push(newQuestion)
 
+    await NotificationModel.create({
+      user: req.user?.id,
+      title: "Nova pergunta adicionada",
+      message: `Você tem uma nova pergunta no curso: ${courseContent?.title}`
+    })
+
     // Salvando a alteração
     await course?.save()
 
@@ -291,7 +296,23 @@ export const addAnswer = CatchAsyncError(async (req: Request, res: Response, nex
     // Adicionando a resposta à lista de respostas da pergunta
     question.questionReplies.push(newAnswer);
 
-    await course.save();
+    await course?.save();
+
+    if (req.user?.id === question.user._id) {
+      await NotificationModel.create({
+        user: req.user?._id,
+        title: "Nova resposta de pergunta recebida",
+        message: `Você tem uma nova pergunta respondida em ${courseContent.title}`
+      })
+    } else {
+      const data = {
+        name: question.user.name,
+        title: courseContent.title
+      }
+      const html = await ejs.renderFile(
+        path.join(__dirname, "../mails/question-reply.ejs"),
+      )
+    }
 
     res.status(200).json({
       success: true,
@@ -396,5 +417,46 @@ export const addReplyToReview = CatchAsyncError(async (
 
   } catch (error: any) {
     next(new ErrorHandler(error.message, 500))
+  }
+})
+
+// Get all courses --- only for admin
+export const getAllUsers = CatchAsyncError(async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    getAllCoursesService(res)
+  } catch (error: any) {
+    return next(new ErrorHandler(error.message, 400))
+  }
+})
+
+// Delete course --- only for admin
+export const deleteCourse = CatchAsyncError(async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+
+    const { id } = req.params
+
+    const course = await CourseModel.findById(id)
+
+    if (!course) return next(new ErrorHandler("Curso não encontrado", 404))
+
+    await course.deleteOne({ id })
+
+    await redis.del(id)
+
+    res.status(200).json({
+      success: true,
+      message: "Curso deletado com sucesso",
+    })
+
+  } catch (error: any) {
+    return next(new ErrorHandler(error.message, 400))
   }
 })

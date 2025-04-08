@@ -1,6 +1,6 @@
 'use client'
 
-import React, { FC, useState } from "react"
+import { FC, useState } from "react"
 import Protected from "../hooks/useProtected"
 import Heading from "@/app/utils/Heading"
 import Header from "../components/Header"
@@ -11,12 +11,12 @@ type Props = {}
 
 const page: FC<Props> = (props) => {
   const [open, setOpen] = useState(false);
-  const [activeItem, setActiveItem] = useState(0);
+  const [activeItem, setActiveItem] = useState(5);
   const [route, setRoute] = useState("Login")
   const { user } = useSelector((state: any) => state.auth)
 
   return (
-    <div>
+    <div className="w-screen h-screen">
       <Protected>
         <Heading
           title={`${user?.name} Perfil`}

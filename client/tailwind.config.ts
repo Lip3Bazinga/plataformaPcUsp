@@ -34,6 +34,8 @@ export default {
         foreground: "var(--foreground)",
         'custom-blue': 'rgba(87,84,236,1)',
         'custom-orange': 'rgb(252, 206, 0)',
+        "purple": "#8C52FF",
+        "orange": "#FF914D",
       },
       width: {
         '75%': '75%',

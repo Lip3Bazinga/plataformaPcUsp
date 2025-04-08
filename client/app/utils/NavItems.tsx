@@ -44,7 +44,6 @@ type Props = {
 }
 
 const NavItems: React.FC<Props> = ({ activeItem, isMobile }) => {
-  console.log(activeItem)
   return (
     <>
       <div className="hidden 800px:flex">

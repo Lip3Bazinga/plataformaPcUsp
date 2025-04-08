@@ -20,7 +20,7 @@ const CustomModal: FC<Props> = (
       arial-describedby="modal-modal-description"
     >
       <Box
-        className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vh] bg-[#8C52FF]/20 border border-[#8C52FF]/30 shadow-lg backdrop-blur-md p-4 outline-none"
+        className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[50vw] h-[50vh] rounded-md overflow-auto bg-[#8C52FF]/20 border border-[#8C52FF]/30 shadow-lg backdrop-blur-md p-4 outline-none"
       >
         <Component setOpen={setOpen} setRoute={setRoute} />
       </Box>

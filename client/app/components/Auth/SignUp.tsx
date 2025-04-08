@@ -241,12 +241,11 @@ const SignUp: FC<Props> = ({ setRoute }) => {
           <input type="submit" value="Criar conta" className={`${styles.button}`} />
         </div>
 
-        <h5 className="text-center pt-4 font-Poppins text-[14px] text-black dark:text-white">Ou entre com</h5>
-
-        <div className="flex items-center justify-center my-3">
+        {/* <h5 className="text-center pt-4 font-Poppins text-[14px] text-black dark:text-white">Ou entre com</h5> */}
+        {/* <div className="flex items-center justify-center my-3">
           <FcGoogle size={30} className="cursor-pointer mr-2" />
           <AiFillGithub size={30} className="cursor-pointer ml-2" />
-        </div>
+        </div> */}
 
         <div className="text-center pt-4 font-Poppins text-[14px] text-white">
           Já possui uma conta?{" "}
